@@ -7,8 +7,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{108763A7-BF3C-4B84-B7CC-F1BB9EFF3F20}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ARP_Mantikor</RootNamespace>
-    <AssemblyName>ARP Mantikor</AssemblyName>
+    <RootNamespace>Mantikor</RootNamespace>
+    <AssemblyName>Mantikor</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -22,8 +22,7 @@
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>none</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <FileAlignment>8192</FileAlignment>
@@ -39,7 +38,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>ARP_Mantikor.Program</StartupObject>
+    <StartupObject>Mantikor.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>leo-lion-head-side.ico</ApplicationIcon>
@@ -79,6 +78,7 @@
   <ItemGroup>
     <Compile Include="Classes\ARP.cs" />
     <Compile Include="Classes\Host.cs" />
+    <Compile Include="Classes\NDP.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
