@@ -14,7 +14,7 @@ Mantikor is an Open-Source address-resolution spoofing-Tool. The application is 
 ## How to use MANTIKOR
 Mantikor is designed as a console program and can therefore also be executed directly via cmd or powershell. To select an item in the menu, the listed numbers are used. Important is that when defining an IPv4 target, the gateway should also be configured with an IPv4 address. The same is important for IPv6. Mantikor allows to spoof either IPv4/IPv6 or both protocols i.e. ARP and NDP at the same time.
 
-![MANTIKOR](MANTIKOR/MANTIKOR/MANTIKOR/exampleImage.png)
+![MANTIKOR](/MANTIKOR/MANTIKOR/exampleImage.png)
 
 ## Copyright
 The contents and works in this software created by the software operators are subject to German copyright law. The reproduction, editing, distribution and any kind of use outside the limits of copyright law require the written consent of the respective author or creator. Downloads and copies of this software are only permitted for private, non-commercial use.
