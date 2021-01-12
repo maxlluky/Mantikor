@@ -22,7 +22,6 @@ To start the attack, the network adapter, gateway, source and a target must be c
 
 Option 6 is used to end the attack, whereby the closing of the threads takes some time.
 
-
 ![MANTIKOR](/MANTIKOR/MANTIKOR/exampleImage.png)
 
 ## Copyright
