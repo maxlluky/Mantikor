@@ -1,5 +1,5 @@
 # MANTIKOR
-``` Disclaimer: This project is for demonstration purposes and should not be used for illegal purposes! ```
+``` Disclaimer: This project is for demonstration purposes and should not be used for illegal acts! ```
 
 ## Copyright
 The contents and works in this software created by the software operators are subject to German copyright law. The reproduction, editing, distribution and any kind of use outside the limits of copyright law require the written consent of the respective author or creator. Downloads and copies of this software are only permitted for private, non-commercial use.
