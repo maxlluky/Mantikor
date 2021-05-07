@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="Classes\Arp.cs" />
     <Compile Include="Classes\Host.cs" />
+    <Compile Include="Classes\Menu.cs" />
     <Compile Include="Classes\Ndp.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
