@@ -7,7 +7,7 @@ or for illegal purposes.
 in these organizations do not care for laws and ethics anyways.
 You are not one of the "good" ones if you ignore this.)
 ```
-<img src="/img/01.png">
+<img src="img/01.jpg">
 
 ## Whats MANTIKOR?
 Mantikor is an Open-Source address-resolution spoofing-Tool. The application is written in C# with the use of SharpPcap and PacketDotNet. I created the software to learn more about ARP and NDP Spoofing which results in a better understanding how to prevent and detect it in local networks. 
