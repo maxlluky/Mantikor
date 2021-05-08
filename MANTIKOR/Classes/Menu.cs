@@ -1,4 +1,4 @@
-﻿using SharpPcap;
+using SharpPcap;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,14 +11,10 @@ using System.Threading;
 class Menu
 {
     private static ICaptureDevice captureDevice;
-
     private static string deviceDescription = "(not configured)";
-
+    
     private static Host gateway = new Host();
-
     private static List<Host> targetList = new List<Host>();
-
-    //--Contains all Threads (objects). Includes aborted Threads.
     private static List<Thread> threadList = new List<Thread>();
 
     private static Arp arp = new Arp();
@@ -171,7 +167,6 @@ class Menu
         {
             item.Abort();
         }
-
         threadList.Clear();
     }
 
@@ -187,8 +182,6 @@ class Menu
         {
             phyAddrNew = pPhysicalAddress;
         }
-
-        Debug.WriteLine(phyAddrNew);
         return PhysicalAddress.Parse(phyAddrNew);
     }
 }
