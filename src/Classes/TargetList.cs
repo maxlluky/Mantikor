@@ -44,7 +44,7 @@ class TargetList
             Console.Write("Gateway IPv6-Address\t: ");
             target.s_ipAddr = IPAddress.Parse(Console.ReadLine());
 
-            Console.Write("Gateway Physical-Address\t: ");
+            Console.Write("Gateway Physical-Address: ");
             target.s_phAddr = parsePhysicalAddress(Console.ReadLine());
         }
 
