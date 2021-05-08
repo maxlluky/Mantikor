@@ -8,17 +8,17 @@ using System.Threading;
 
 class Ndp
 {
-    public void threadMethodeNdpResponse(Host pTarget, Host pGateway, ICaptureDevice pCaptureDevice)
+    public void threadMethodeNdpResponse(Target pTarget, ICaptureDevice pCaptureDevice)
     {
         while (true)
         {
             try
             {
                 //--Target
-                sendNdpResponse(pTarget.ipAddress, pGateway.ipAddress, pTarget.physicalAddress, pCaptureDevice);
+                sendNdpResponse(pTarget.t_ipAddr, pTarget.s_ipAddr, pTarget.t_phAddr, pCaptureDevice);
 
                 //--Gateway
-                sendNdpResponse(pGateway.ipAddress, pTarget.ipAddress, pGateway.physicalAddress, pCaptureDevice);
+                sendNdpResponse(pTarget.s_ipAddr, pTarget.t_ipAddr, pTarget.s_phAddr, pCaptureDevice);
 
                 //--Gateway
                 Thread.Sleep(100);

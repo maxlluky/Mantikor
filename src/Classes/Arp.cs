@@ -8,17 +8,17 @@ using System.Threading;
 
 class Arp
 {
-    public void threadMethodeArpResponse(Host pTarget, Host pGateway, ICaptureDevice pCaptureDevice)
+    public void threadMethodeArpResponse(Target pTarget, ICaptureDevice pCaptureDevice)
     {
         while (true)
         {
             try
             {
                 //--Target
-                sendArpResponse(pTarget.ipAddress, pGateway.ipAddress, pTarget.physicalAddress, pCaptureDevice);
+                sendArpResponse(pTarget.t_ipAddr, pTarget.s_ipAddr, pTarget.t_phAddr, pCaptureDevice);
 
                 //--Gateway
-                sendArpResponse(pGateway.ipAddress, pTarget.ipAddress, pGateway.physicalAddress, pCaptureDevice);
+                sendArpResponse(pTarget.s_ipAddr, pTarget.t_ipAddr, pTarget.s_phAddr, pCaptureDevice);
 
                 Thread.Sleep(100);
             }

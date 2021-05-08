@@ -6,6 +6,8 @@ namespace MANTIKOR
     class Program
     {
         private static Menu menu = new Menu();
+        private static TargetList targetList = new TargetList();
+        private static Attack attack = new Attack();
 
         static void Main(string[] args)
         {
@@ -13,7 +15,7 @@ namespace MANTIKOR
 
             while (true)
             {
-                menu.printFrontend();
+                menu.printFrontend(targetList, attack);
                 Console.Write("#>");
                 string input = Console.ReadLine();
 
@@ -23,16 +25,16 @@ namespace MANTIKOR
                         menu.configureNetworkAdapter();
                         break;
                     case "2":
-                        menu.addNewTarget();
+                        targetList.addNewTarget();
                         break;
                     case "3":
-                        menu.printTargetList();
+                        targetList.printTargetList();
                         break;
                     case "4":
-                        menu.startAttack();
+                        attack.startAttack(menu.captureDevice, targetList);
                         break;
                     case "5":
-                        menu.forceStop();
+                        attack.forceStop();
                         break;
                     default:
                         break;
