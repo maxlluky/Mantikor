@@ -1,4 +1,4 @@
-# MANTIKOR
+# Mantikor
 ``` 
 Disclaimer: This project is for demonstration purposes and should not be used for illegal acts! 
 Please do not use in military or secret service organizations,
@@ -9,10 +9,10 @@ You are not one of the "good" ones if you ignore this.)
 ```
 <img src="img/01.jpg">
 
-## Whats MANTIKOR?
+## Whats Mantikor?
 Mantikor is an Open-Source address-resolution spoofing-Tool. The application is written in C# with the use of SharpPcap and PacketDotNet. I created the software to learn more about ARP and NDP Spoofing which results in a better understanding how to prevent and detect it in local networks. 
 
-## How to use MANTIKOR
+## How to use Mantikor
 Mantikor is designed as a console program and can therefore also be executed directly via cmd or powershell. To select an item in the menu, the listed numbers are used. Mantikor allows to spoof either IPv4/IPv6 or both protocols i.e. ARP and NDP at the same time.
 
 ## Copyright
