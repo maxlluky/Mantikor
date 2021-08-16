@@ -1,11 +1,7 @@
 # Mantikor
 ``` 
 Disclaimer: This project is for demonstration purposes and should not be used for illegal acts! 
-Please do not use in military or secret service organizations,
-or for illegal purposes.
-(This is the wish of the author and non-binding. Many people working
-in these organizations do not care for laws and ethics anyways.
-You are not one of the "good" ones if you ignore this.)
+Please have a look at why I published this tool and why spoofing is wrong. Thanks
 ```
 <img src="img/01.jpg">
 
