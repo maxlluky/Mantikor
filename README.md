@@ -1,7 +1,7 @@
 # Mantikor
 ``` 
 Disclaimer: This project is for demonstration purposes and should not be used for illegal acts! 
-Please have a look at why I published this tool and why spoofing is wrong. Thanks
+Please have a look at why I published this tool and why i think spoofing is wrong. Thanks
 ```
 <img src="img/01.jpg">
 
@@ -12,7 +12,7 @@ Mantikor should be expanded into a professional pentesting software with a graph
 Mantikor is an Open-Source address-resolution spoofing-Tool. The application is written in C# with the use of SharpPcap and PacketDotNet. I created the software to learn more about ARP and NDP Spoofing which results in a better understanding how to prevent and detect it in local networks. 
 
 ## Why publishing another ARP and NDP spoofing tool?
-The intention of my project is to give everyone an example of how easy it is to get hacked in an IP network. Unfortunately, nothing has been done about the worst and biggest security holes in IP networks for so many years now. Therefore, my project is only designed to serve as a demonstration to make people aware of exactly these problems. Cheers
+The intention of my project is to give everyone an example of how easy it is to get hacked in an IP network. Unfortunately, nothing has been done about the worst and biggest security holes in IP networks for so many years now. Therefore, my project is only designed to serve as a demonstration to make people aware of exactly these problems.
 
 ## How to use Mantikor
 Mantikor is designed as a console program and can therefore also be executed directly via cmd or powershell. To select an item in the menu, the listed numbers are used. Mantikor allows to spoof either over IPv4/IPv6 or both protocols i.e. ARP and NDP at the same time.
@@ -23,3 +23,4 @@ The contents and works in this software created by the software operators are su
 Insofar as the content on this software was not created by the operator, the copyrights of third parties are observed. In particular, third-party content is identified as such. Should you nevertheless become aware of a copyright infringement, please inform us accordingly. If we become aware of any infringements, we will remove such contents immediately.
 
 Source: [eRecht24.de](https://www.e-recht24.de/)
+Cheers 👀
