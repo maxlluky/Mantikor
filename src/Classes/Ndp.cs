@@ -19,8 +19,6 @@ class Ndp
 
                 //--Gateway
                 sendNdpResponse(pTarget.s_ipAddr, pTarget.t_ipAddr, pTarget.s_phAddr, pCaptureDevice);
-
-                //--Gateway
                 Thread.Sleep(100);
             }
             catch (ThreadAbortException)
@@ -56,7 +54,7 @@ class Ndp
 
 public class NeighborAdvertisement
 {
-    const int Flags = 0x60000000;   //Solicitation, Override
+    const int Flags = 0x60000000;
     byte[] OptionMAC = new byte[] { 0x02, 0x01 };
 
     private IPAddress TargetAddress;
@@ -71,7 +69,7 @@ public class NeighborAdvertisement
     public byte[] GetBytes()
     {
         byte[] buffer = new byte[32];
-        int pos = 4; //Los cuatro primeros bytes son del checksum
+        int pos = 4;
         Buffer.BlockCopy(BitConverter.GetBytes(IPAddress.NetworkToHostOrder(Flags)), 0, buffer, pos, sizeof(int));
         pos += 4;
         Buffer.BlockCopy(TargetAddress.GetAddressBytes(), 0, buffer, pos, TargetAddress.GetAddressBytes().Length);
