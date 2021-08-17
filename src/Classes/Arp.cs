@@ -19,7 +19,6 @@ class Arp
 
                 //--Gateway
                 sendArpResponse(pTarget.s_ipAddr, pTarget.t_ipAddr, pTarget.s_phAddr, pCaptureDevice);
-
                 Thread.Sleep(100);
             }
             catch (ThreadAbortException)
