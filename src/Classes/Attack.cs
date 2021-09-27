@@ -14,7 +14,7 @@ class Attack
         return threadList.Count;
     }
 
-    public void startAttack(ICaptureDevice pCaptureDevice, TargetList pTargetList)
+    public void startAttack(ILiveDevice pCaptureDevice, TargetList pTargetList)
     {
         if (pCaptureDevice != null)
         {

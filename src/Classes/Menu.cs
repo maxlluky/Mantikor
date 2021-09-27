@@ -4,7 +4,7 @@ using System.Reflection;
 
 class Menu
 {
-    public ICaptureDevice captureDevice;
+    public ILiveDevice captureDevice;
     private static string deviceDescription = "(not configured)";
 
     public void printFrontend(TargetList pTargetList, Attack pAttack)
@@ -19,7 +19,7 @@ class Menu
 
         Console.WriteLine(logo);
 
-        Console.WriteLine("MANTIKOR {0} & SharpPcap {1}\n", Assembly.GetExecutingAssembly().GetName().Version, SharpPcap.Version.VersionString);
+        Console.WriteLine("MANTIKOR {0} & SharpPcap {1}\n", Assembly.GetExecutingAssembly().GetName().Version, Pcap.SharpPcapVersion);
 
         Console.WriteLine("Use the numbers to navigate!");
         Console.WriteLine("[1] Configure Network Adapter => {0}", deviceDescription);

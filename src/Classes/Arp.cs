@@ -8,7 +8,7 @@ using System.Threading;
 
 class Arp
 {
-    public void threadMethodeArpResponse(Target pTarget, ICaptureDevice pCaptureDevice)
+    public void threadMethodeArpResponse(Target pTarget, ILiveDevice pCaptureDevice)
     {
         while (true)
         {
@@ -28,7 +28,7 @@ class Arp
         }
     }
 
-    private bool sendArpResponse(IPAddress pDestIPAddr, IPAddress pSourceIPAddr, PhysicalAddress pDestHwAddr, ICaptureDevice pDevice)
+    private bool sendArpResponse(IPAddress pDestIPAddr, IPAddress pSourceIPAddr, PhysicalAddress pDestHwAddr, ILiveDevice pDevice)
     {
         try
         {

@@ -8,7 +8,7 @@ using System.Threading;
 
 class Ndp
 {
-    public void threadMethodeNdpResponse(Target pTarget, ICaptureDevice pCaptureDevice)
+    public void threadMethodeNdpResponse(Target pTarget, ILiveDevice pCaptureDevice)
     {
         while (true)
         {
@@ -28,7 +28,7 @@ class Ndp
         }
     }
 
-    private bool sendNdpResponse(IPAddress pDestIPAddr, IPAddress pSourceIPAddr, PhysicalAddress pDestHwAddr, ICaptureDevice pDevice)
+    private bool sendNdpResponse(IPAddress pDestIPAddr, IPAddress pSourceIPAddr, PhysicalAddress pDestHwAddr, ILiveDevice pDevice)
     {
         try
         {
