@@ -6,7 +6,7 @@ Please have a look at why I published this tool. Thanks
 <img src="img/01.jpg">
 
 ## The goal of the project
-Mantikor should be expanded into a professional pentesting software with a graphical user interface under Windows and a console under Linux. The application is intended to test safety systems for their function and reliability. ARP spoofing and NDP poisoning have to be impossible with new implementations and protection mechanisms. I would like to support the development of a new standard that fixes the security problems of ARP and NDP.
+Mantikor should be expanded into a professional pentesting software with a graphical user interface under Windows and a console under Linux. The application is intended to test safety systems for their function and reliability. ARP spoofing and NDP poisoning have to be impossible with new implementations and protection mechanisms. I would like to support the development of a new standard that fixes the security problems of ARP and NDP. 
 
 ## Whats Mantikor?
 Mantikor is an Open-Source address-resolution spoofing-Tool. The application is written in C# with the use of SharpPcap and PacketDotNet. I created the software to learn more about ARP and NDP Spoofing which results in a better understanding how to prevent and detect it in local networks. 
