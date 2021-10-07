@@ -5,9 +5,6 @@ Please have a look at why I published this tool. Thanks
 ```
 <img src="img/01.jpg">
 
-## The goal of the project
-Mantikor should be expanded into a professional pentesting software with a graphical user interface under Windows and a console under Linux. The application is intended to test safety systems for their function and reliability. ARP spoofing and NDP poisoning have to be impossible with new implementations and protection mechanisms. I would like to support the development of a new standard that fixes the security problems of ARP and NDP. 
-
 ## Whats Mantikor?
 Mantikor is an Open-Source address-resolution spoofing-Tool. The application is written in C# with the use of SharpPcap and PacketDotNet. I created the software to learn more about ARP and NDP Spoofing which results in a better understanding how to prevent and detect it in local networks. 
 
@@ -15,8 +12,14 @@ Mantikor is an Open-Source address-resolution spoofing-Tool. The application is 
 During my studies to become an IT specialist, I started to get very interested in programming network applications. Thereby, I noticed the huge number of possibilities and vulnerabilities in network protocols. After a short time, I got familiar with the ARP and NDP protocols and started to get frightened by how easily I could program such a tool.
 The intention now of my project is to give everyone an example of how easy it is to get hacked in an IP network. Unfortunately, nothing has been done about the worst and biggest security holes in IP networks for so many years now. Therefore, my project is only designed to serve as a demonstration to make people aware of exactly these problems.
 
+## The goal of the project
+Mantikor should be expanded into a professional pentesting software with a graphical user interface under Windows and a console under Linux. The application is intended to test safety systems for their function and reliability. ARP spoofing and NDP poisoning have to be impossible with new implementations and protection mechanisms. I would like to support the development of a new standard that fixes the security problems of ARP and NDP. 
+
 ## How to use Mantikor
 Mantikor is designed as a console program and can therefore also be executed directly via cmd or powershell. To select an item in the menu, the listed numbers are used. Mantikor allows to spoof either over IPv4/IPv6 or both protocols i.e. ARP and NDP at the same time.
+
+## What you need
+To compile Mantikor you need .NET 4.8, Visual Studio and Npcap installed on your computer. Mantikor was not developed with .NET Core!
 
 ## Changelog
 - V1.0.7 - Upgrade to SharpPcap V. 6.1
