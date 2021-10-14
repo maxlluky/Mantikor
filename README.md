@@ -22,7 +22,7 @@ Mantikor is designed as a console program and can therefore also be executed dir
 To compile Mantikor you need .NET 4.8, Visual Studio and Npcap installed on your computer. Mantikor was not developed with .NET Core!
 
 ## Changelog
-- V1.0.7 - Upgrade to SharpPcap V. 6.1
+- V1.0.7 - Upgrade to SharpPcap V.6.1, also resolves MAC over IPv6.
 
 ## Copyright
 The contents and works in this software created by the software operators are subject to German copyright law. The reproduction, editing, distribution and any kind of use outside the limits of copyright law require the written consent of the respective author or creator. Downloads and copies of this software are only permitted for private, non-commercial use.
