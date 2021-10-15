@@ -4,46 +4,23 @@ using System;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
-using System.Threading;
 
 class Arp
 {
-    public void threadMethodeArpResponse(Target pTarget, ILiveDevice pCaptureDevice)
-    {
-        while (true)
-        {
-            try
-            {
-                //--Target
-                sendArpResponse(pTarget.t_ipAddr, pTarget.s_ipAddr, pTarget.t_phAddr, pCaptureDevice);
+    //--Variables
+    private ILiveDevice liveDevice;
 
-                //--Gateway
-                sendArpResponse(pTarget.s_ipAddr, pTarget.t_ipAddr, pTarget.s_phAddr, pCaptureDevice);
-                Thread.Sleep(100);
-            }
-            catch (ThreadAbortException)
-            {
-                break;
-            }
-        }
+    public Arp(ILiveDevice pLiveDevice)
+    {
+        liveDevice = pLiveDevice;
     }
 
-    private bool sendArpResponse(IPAddress pDestIPAddr, IPAddress pSourceIPAddr, PhysicalAddress pDestHwAddr, ILiveDevice pDevice)
+    public Packet buildArpPacket(IPAddress pDestIPAddr, IPAddress pSourceIPAddr, PhysicalAddress pDestHwAddr)
     {
-        try
-        {
-            EthernetPacket ethernetPacket = new EthernetPacket(pDevice.MacAddress, pDestHwAddr, EthernetType.Arp);
-            ArpPacket arpframe = new ArpPacket(ArpOperation.Response, pDestHwAddr, pDestIPAddr, pDevice.MacAddress, pSourceIPAddr);
-            ethernetPacket.PayloadPacket = arpframe;
-
-            pDevice.SendPacket(ethernetPacket);
-            return true;
-        }
-        catch (Exception eX)
-        {
-            Console.WriteLine(eX.Message);
-        }
-        return false;
+        EthernetPacket ethernetPacket = new EthernetPacket(liveDevice.MacAddress, pDestHwAddr, EthernetType.Arp);
+        ArpPacket arpframe = new ArpPacket(ArpOperation.Response, pDestHwAddr, pDestIPAddr, liveDevice.MacAddress, pSourceIPAddr);
+        ethernetPacket.PayloadPacket = arpframe;
+        return ethernetPacket;
     }
 
     public PhysicalAddress getPhysicalAddress(IPAddress pIPAddress)

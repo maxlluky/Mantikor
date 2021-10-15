@@ -5,6 +5,7 @@ namespace MANTIKOR
 {
     class Program
     {
+        //--Variables
         private static Menu menu = new Menu();
         private static TargetList targetList = new TargetList();
         private static Attack attack = new Attack();
@@ -25,7 +26,7 @@ namespace MANTIKOR
                         menu.configureNetworkAdapter();
                         break;
                     case "2":
-                        targetList.addNewTarget();
+                        targetList.addNewTarget(menu.captureDevice);
                         break;
                     case "3":
                         targetList.printTargetList();

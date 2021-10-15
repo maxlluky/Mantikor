@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpPcap;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -7,7 +8,8 @@ using System.Net.Sockets;
 class TargetList
 {
     private List<Target> targetList = new List<Target>();
-    private static Arp arp = new Arp();
+    private Arp arp;
+    private Ndp ndp;
 
     public int getLength()
     {
@@ -19,8 +21,13 @@ class TargetList
         return targetList;
     }
 
-    public void addNewTarget()
+    public void addNewTarget(ILiveDevice pLiveDevice)
     {
+        // ARP & NDP
+        arp = new Arp(pLiveDevice);
+        ndp = new Ndp(pLiveDevice);
+
+        // Target
         Target target = new Target();
         Console.Write("Target IP-Address \t: ");
         IPAddress tempAddr = IPAddress.Parse(Console.ReadLine());
@@ -37,15 +44,11 @@ class TargetList
         else if (tempAddr.AddressFamily.Equals(AddressFamily.InterNetworkV6))
         {
             target.t_ipAddr = tempAddr;
-
-            Console.Write("Target Physical-Address\t: ");
-            target.t_phAddr = parsePhysicalAddress(Console.ReadLine());
+            target.t_phAddr = ndp.getPhysicalAddress(IPAddress.Parse("fe80::586f:4076:95b8:555a"), target.t_ipAddr);
 
             Console.Write("Gateway IPv6-Address\t: ");
             target.s_ipAddr = IPAddress.Parse(Console.ReadLine());
-
-            Console.Write("Gateway Physical-Address: ");
-            target.s_phAddr = parsePhysicalAddress(Console.ReadLine());
+            target.s_phAddr = ndp.getPhysicalAddress(IPAddress.Parse("fe80::586f:4076:95b8:555a"), target.s_ipAddr);
         }
 
         targetList.Add(target);
