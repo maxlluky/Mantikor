@@ -10,6 +10,8 @@ class Arp
     //--Variables
     private ILiveDevice liveDevice;
 
+    public Arp() { }
+
     public Arp(ILiveDevice pLiveDevice)
     {
         liveDevice = pLiveDevice;

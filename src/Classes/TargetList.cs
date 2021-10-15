@@ -8,8 +8,8 @@ using System.Net.Sockets;
 class TargetList
 {
     private List<Target> targetList = new List<Target>();
-    private Arp arp;
-    private Ndp ndp;
+    private Arp arp = new Arp();
+
 
     public int getLength()
     {
@@ -23,11 +23,6 @@ class TargetList
 
     public void addNewTarget(ILiveDevice pLiveDevice)
     {
-        // ARP & NDP
-        arp = new Arp(pLiveDevice);
-        ndp = new Ndp(pLiveDevice);
-
-        // Target
         Target target = new Target();
         Console.Write("Target IP-Address \t: ");
         IPAddress tempAddr = IPAddress.Parse(Console.ReadLine());
@@ -44,11 +39,15 @@ class TargetList
         else if (tempAddr.AddressFamily.Equals(AddressFamily.InterNetworkV6))
         {
             target.t_ipAddr = tempAddr;
-            target.t_phAddr = ndp.getPhysicalAddress(IPAddress.Parse("fe80::586f:4076:95b8:555a"), target.t_ipAddr);
+
+            Console.Write("Target Physical-Address\t: ");
+            target.t_phAddr = parsePhysicalAddress(Console.ReadLine());
 
             Console.Write("Gateway IPv6-Address\t: ");
             target.s_ipAddr = IPAddress.Parse(Console.ReadLine());
-            target.s_phAddr = ndp.getPhysicalAddress(IPAddress.Parse("fe80::586f:4076:95b8:555a"), target.s_ipAddr);
+
+            Console.Write("Gateway Physical-Address: ");
+            target.s_phAddr = parsePhysicalAddress(Console.ReadLine());
         }
 
         targetList.Add(target);
