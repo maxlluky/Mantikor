@@ -12,6 +12,30 @@ Mantikor is an Open-Source address-resolution spoofing-Tool. The application is 
 During my studies to become an IT specialist, I started to get very interested in programming network applications. Thereby, I noticed the huge number of possibilities and vulnerabilities in network protocols. After a short time, I got familiar with the ARP and NDP protocols and started to get frightened by how easily I could program such a tool.
 The intention now of my project is to give everyone an example of how easy it is to get hacked in an IP network. Unfortunately, nothing has been done about the worst and biggest security holes in IP networks for so many years now. Therefore, my project is only designed to serve as a demonstration to make people aware of exactly these problems.
 
+## What is the easiest way to prevent spoofing?
+The easiest solution for me to prevent ARP and NDP spoofing was to manually (statically) enter the MAC address of my gateway into the tables.
+1.  With Windows this can be done quite easily with the Powershell: (Example)
+```
+PS C:\WINDOWS\system32> Get-NetAdapter
+```
+Which returns:
+```
+Name      InterfaceDescription                    ifIndex Status       MacAddress         LinkSpeed
+----      --------------------                    ------- ------       ----------         ---------
+Wi-Fi     Intel(R) Dual Band Wireless                  18 Disconnected 12-34-56-AB-CD-EF     6 Mbps
+Ethernet  Intel(R) Ethernet Connection …                9 Up           78-90-12-GH-IJ-KL     1 Gbps
+```
+2.  To create a static ARP cache entry for that interface (that survive a reboot):
+```
+New-NetNeighbor -InterfaceIndex 9 -IPAddress '192.168.178.1' -LinkLayerAddress '0000120000ff' -State Permanent
+```
+3.  You can remove the entry we just created by running this:
+```
+Remove-NetNeighbor -InterfaceIndex 9 -IPAddress '192.168.0.10'
+```
+
+The same works for NDP. For this, the IPv6 address must be used instead of the IPv4 address of the gateway in step 2.
+
 ## The goal of the project
 Mantikor should be expanded into a professional pentesting software with a graphical user interface under Windows and a console under Linux. The application is intended to test safety systems for their function and reliability. ARP spoofing and NDP poisoning have to be impossible with new implementations and protection mechanisms. I would like to support the development of a new standard that fixes the security problems of ARP and NDP. 
 
