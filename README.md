@@ -31,7 +31,7 @@ New-NetNeighbor -InterfaceIndex 9 -IPAddress '192.168.178.1' -LinkLayerAddress '
 ```
 3.  You can remove the entry we just created by running this:
 ```PowerShell
-Remove-NetNeighbor -InterfaceIndex 9 -IPAddress '192.168.0.10'
+Remove-NetNeighbor -InterfaceIndex 9 -IPAddress '192.168.178.1'
 ```
 
 The same works for NDP. For this, the IPv6 address must be used instead of the IPv4 address of the gateway in step 2.
