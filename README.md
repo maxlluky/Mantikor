@@ -16,7 +16,7 @@ The intention now of my project is to give everyone an example of how easy it is
 The easiest solution for me to prevent ARP and NDP spoofing was to manually (statically) enter the MAC address of my gateway into the tables.
 1.  With Windows this can be done quite easily with the Powershell: (Example)
 ```
-PS C:\WINDOWS\system32> Get-NetAdapter
+Get-NetAdapter
 ```
 Which returns:
 ```
