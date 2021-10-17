@@ -19,18 +19,18 @@ The easiest solution for me to prevent ARP and NDP spoofing was to manually (sta
 Get-NetAdapter
 ```
 Which returns:
-```
+```PowerShell
 Name      InterfaceDescription                    ifIndex Status       MacAddress         LinkSpeed
 ----      --------------------                    ------- ------       ----------         ---------
 Wi-Fi     Intel(R) Dual Band Wireless                  18 Disconnected 12-34-56-AB-CD-EF     6 Mbps
 Ethernet  Intel(R) Ethernet Connection …                9 Up           78-90-12-GH-IJ-KL     1 Gbps
 ```
 2.  To create a static ARP cache entry for that interface (that survive a reboot):
-```
+```PowerShell
 New-NetNeighbor -InterfaceIndex 9 -IPAddress '192.168.178.1' -LinkLayerAddress '0000120000ff' -State Permanent
 ```
 3.  You can remove the entry we just created by running this:
-```
+```PowerShell
 Remove-NetNeighbor -InterfaceIndex 9 -IPAddress '192.168.0.10'
 ```
 
