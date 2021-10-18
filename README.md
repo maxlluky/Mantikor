@@ -6,11 +6,10 @@ Please have a look at why I published this tool. Thanks
 <img src="img/01.jpg">
 
 ## Whats Mantikor?
-Mantikor is an Open-Source address-resolution spoofing-Tool. The application is written in C# with the use of SharpPcap and PacketDotNet. I created the software to learn more about ARP and NDP Spoofing which results in a better understanding how to prevent and detect it in local networks. 
+Mantikor is an Open-Source address-resolution spoofing-Tool. The application is written in C# with the use of SharpPcap and PacketDotNet.
 
 ## Why publishing another ARP and NDP spoofing tool?
-During my studies to become an IT specialist, I started to get very interested in programming network applications. Thereby, I noticed the huge number of possibilities and vulnerabilities in network protocols. After a short time, I got familiar with the ARP and NDP protocols and started to get frightened by how easily I could program such a tool.
-The intention now of my project is to give everyone an example of how easy it is to get hacked in an IP network. Unfortunately, nothing has been done about the worst and biggest security holes in IP networks for so many years now.
+During my studies to become an IT specialist, I started to get very interested in programming network applications. Thereby, I noticed the huge number of possibilities and vulnerabilities in network protocols. After a short time, I got familiar with the ARP and NDP protocols. It didn’t take me much time to great the project called Mantikor. My intention was to learn more about ARP and NDP spoofing, combined with the idea of building some security mechanism to prevent it. To gain more experience, I continued to improve my tool over the time. Unfortunately, nothing important has been done about the worst security holes in IP networks for so many years now.
 
 ## What is the easiest way to prevent spoofing?
 The easiest solution for me to prevent ARP and NDP spoofing was to manually (statically) enter the MAC address of my gateway into the arp and ndp-table.
