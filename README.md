@@ -12,7 +12,7 @@ Mantikor is an Open-Source address-resolution spoofing-Tool. The application is 
 During my studies to become an IT specialist, I started to get very interested in programming network applications. Thereby, I noticed the huge number of possibilities and vulnerabilities in network protocols. After a short time, I got familiar with the ARP and NDP protocols. It didn’t take me much time to great the project called Mantikor. My intention was to learn more about ARP and NDP spoofing, combined with the idea of building some security mechanism to prevent it. To gain more experience, I continued to improve my tool over the time. Unfortunately, nothing important has been done about the worst security holes in IP networks for so many years now.
 
 ## What is the easiest way to prevent spoofing?
-The easiest solution for me to prevent ARP and NDP spoofing was to manually (statically) enter the MAC address of my gateway into the arp and ndp-table.
+The easiest solution to prevent ARP and NDP spoofing is to manually (statically) enter the MAC address of the gateway into the arp and ndp-table.
 
 1.  With Windows this can be done quite easily with the Powershell: (Example)
 ```PowerShell
