@@ -1,5 +1,6 @@
 using SharpPcap;
 using System;
+using System.Linq;
 using System.Reflection;
 
 class Menu
@@ -44,7 +45,14 @@ class Menu
         foreach (var dev in devices)
         {
             dev.Open();
-            Console.WriteLine("{0}) {1} {2}", i, dev.Description, dev.MacAddress);
+            if (dev.MacAddress != null)
+            {
+                Console.WriteLine("{0}) {1} {2}", i, dev.Description, string.Join("-", dev.MacAddress.GetAddressBytes().Select(b => b.ToString("X2"))));
+            }
+            else
+            {
+                Console.WriteLine("{0}) {1}", i, dev.Description);
+            }
             dev.Close();
             i++;
         }

@@ -17,7 +17,7 @@ namespace MANTIKOR
             while (true)
             {
                 menu.printFrontend(targetList, attack);
-                Console.Write("#>");
+                Console.Write("#> ");
                 string input = Console.ReadLine();
 
                 switch (input)

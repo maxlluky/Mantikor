@@ -1,6 +1,7 @@
 ﻿using SharpPcap;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
@@ -50,19 +51,26 @@ class TargetList
             target.s_phAddr = parsePhysicalAddress(Console.ReadLine());
         }
 
-        targetList.Add(target);
+        if (target.s_phAddr != null & target.t_phAddr != null)
+            targetList.Add(target);
+        else
+        {
+            Console.WriteLine("[!] Error: Cannot resolve the MAC-Address to a entered IP-Address!");
+            Console.ReadLine();
+        }
+
     }
 
     public void printTargetList()
     {
         for (int i = 0; i < targetList.Count; i++)
         {
-            Console.WriteLine("{0}. IP-Address:{1}\tPhysical-Address:{2}\n=> IP-Address:{3}\tPhysical-Address:{4}",
+            Console.WriteLine("{0}. IP-Address: {1}\tPhysical-Address: {2}\n=> IP-Address: {3}\tPhysical-Address: {4}",
                 i,
                 targetList[i].t_ipAddr,
-                targetList[i].t_phAddr,
+                string.Join("-", targetList[i].t_phAddr.GetAddressBytes().Select(b => b.ToString("X2"))),
                 targetList[i].s_ipAddr,
-                targetList[i].s_phAddr);
+                string.Join("-", targetList[i].s_phAddr.GetAddressBytes().Select(b => b.ToString("X2"))));
         }
 
         if (targetList.Count > 0)
