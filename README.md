@@ -46,9 +46,6 @@ Mantikor is designed as a console program and can therefore also be executed dir
 ## What you need
 To compile Mantikor you need .NET 8.0, Visual Studio (Windows) and Npcap installed on your computer.#
 
-## Compile for Linux
-You can compile this project for linux systems!
-
 ## Changelog
 - V1.0.8.0 - SharpPcap 6.2.5.0, .NET 8.0, Linux Support, changed to LibPcapDevice, new method to resolve via ARP, NDP-Classes merged, Code-Cleanup, fixed wrong User-Inputs.
 
