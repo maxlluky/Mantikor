@@ -1,6 +1,6 @@
 # Mantikor
 ``` 
-Disclaimer: This project is for demonstration purposes and should not be used for illegal acts! 
+Disclaimer: This project is only for demonstration purposes and should not be used for illegal acts! 
 Please have a look at why I published this tool. Thanks
 ```
 <img src="img/01.jpg">
