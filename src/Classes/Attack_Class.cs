@@ -10,8 +10,8 @@ class Attack_Class
     private Ndp_Class ndp;
 
     //--Variables
-    LibPcapLiveDevice liveDevice;
-    private readonly List<Thread> threadList = [];
+    private LibPcapLiveDevice liveDevice;
+    private readonly List<Thread> threadList = new List<Thread>();
 
     /// <summary>
     /// Indicates whether a Attack is active = true

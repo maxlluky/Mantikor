@@ -5,12 +5,17 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.NetworkInformation;
 
-class Ndp_Class(ILiveDevice pLiveDevice)
+class Ndp_Class
 {
     //--Variables
-    private readonly ILiveDevice liveDevice = pLiveDevice;
+    private readonly ILiveDevice liveDevice;
     const int Flags = 0x60000000;
-    readonly byte[] OptionMAC = [0x02, 0x01];
+    readonly byte[] OptionMAC = new byte[] { 0x02, 0x01 };
+
+    public Ndp_Class(ILiveDevice pLiveDevice)
+    {
+        this.liveDevice = pLiveDevice;
+    }
 
     /// <summary>
     /// 

@@ -5,7 +5,7 @@ using System.Net.Sockets;
 
 class TargetList_Class
 {
-    private readonly List<Target_Class> targetList = [];
+    private readonly List<Target_Class> targetList = new List<Target_Class>();
     private readonly Arp_Class arp = new();
 
 
