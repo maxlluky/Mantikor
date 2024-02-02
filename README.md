@@ -13,6 +13,7 @@ During my studies to become an IT specialist, I started to get very interested i
 
 ## What's the easiest way to prevent spoofing in an Enterprise Network?
 Company networks have an easy way to prevent ARP using the DAI (Dynamic Arp Inspection) feature. This can be configured on switches. Firewalls can also detect spoofing attacks.
+[Cisco.com: Understanding and Configuring Dynamic ARP Inspectio](https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst4500/12-2/25ew/configuration/guide/conf/dynarp.html)
 
 ## What's the easiest way to prevent spoofing on a PC?
 The easiest solution to prevent ARP and NDP spoofing is to manually (statically) enter the MAC address of the gateway into the arp and ndp-table.
