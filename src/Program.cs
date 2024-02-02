@@ -1,41 +1,42 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 
-namespace MANTIKOR
+namespace Mantikor
 {
-    class Program
+    internal class Program
     {
         //--Variables
-        private static Menu menu = new Menu();
-        private static TargetList targetList = new TargetList();
-        private static Attack attack = new Attack();
+        private static readonly Menu_Class menu = new();
+        private static readonly TargetList_Class targetList = new();
+        private static readonly Attack_Class attack = new();
 
         static void Main(string[] args)
         {
+            ArgumentNullException.ThrowIfNull(args);
+
             Console.Title = "MANTIKOR v." + Assembly.GetExecutingAssembly().GetName().Version;
 
             while (true)
             {
-                menu.printFrontend(targetList, attack);
+                Menu_Class.PrintFrontend(targetList, attack);
                 Console.Write("#>");
                 string input = Console.ReadLine();
 
                 switch (input)
                 {
                     case "1":
-                        menu.configureNetworkAdapter();
+                        menu.ConfigureNetworkAdapter();
                         break;
                     case "2":
-                        targetList.addNewTarget(menu.captureDevice);
+                        targetList.AddNewTarget(menu.captureDevice);
                         break;
                     case "3":
-                        targetList.printTargetList();
+                        targetList.PrintTargetList();
                         break;
                     case "4":
-                        attack.startAttack(menu.captureDevice, targetList);
+                        attack.StartAttack(menu.captureDevice, targetList);
                         break;
                     case "5":
-                        attack.forceStop();
+                        attack.ForceStop();
                         break;
                     default:
                         break;

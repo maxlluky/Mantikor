@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30804.86
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantikor", "src\Mantikor.csproj", "{108763A7-BF3C-4B84-B7CC-F1BB9EFF3F20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mantikor", "src\Mantikor.csproj", "{A0A9B190-F6F2-4716-8D51-42ABAE938BDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{108763A7-BF3C-4B84-B7CC-F1BB9EFF3F20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{108763A7-BF3C-4B84-B7CC-F1BB9EFF3F20}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{108763A7-BF3C-4B84-B7CC-F1BB9EFF3F20}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{108763A7-BF3C-4B84-B7CC-F1BB9EFF3F20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0A9B190-F6F2-4716-8D51-42ABAE938BDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0A9B190-F6F2-4716-8D51-42ABAE938BDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0A9B190-F6F2-4716-8D51-42ABAE938BDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0A9B190-F6F2-4716-8D51-42ABAE938BDB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

