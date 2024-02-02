@@ -40,10 +40,10 @@ The same works for NDP. For this, the IPv6 address must be used instead of the I
 Mantikor is designed as a console program and can therefore also be executed directly via cmd or powershell. To select an item in the menu, the listed numbers are used. Mantikor allows to spoof either over IPv4/IPv6 or both protocols i.e. ARP and NDP at the same time.
 
 ## What you need
-To compile Mantikor you need .NET 4.8, Visual Studio and Npcap installed on your computer. Mantikor was not developed with .NET Core!
+To compile Mantikor you need .NET 8.0, Visual Studio and Npcap installed on your computer.
 
 ## Changelog
-- V1.0.7 - Upgrade to SharpPcap V.6.1, also resolves MAC over IPv6.
+- V1.0.8.0 - SharpPcap 6.2.5.0, .NET 8.0, Linux Support, changed to LibPcapDevice, new method to resolve via ARP, NDP-Classes merged, Code-Cleanup, fixed wrong User-Inputs.
 
 ## Copyright
 The contents and works in this software created by the software operators are subject to German copyright law. The reproduction, editing, distribution and any kind of use outside the limits of copyright law require the written consent of the respective author or creator. Downloads and copies of this software are only permitted for private, non-commercial use.
