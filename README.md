@@ -44,9 +44,32 @@ The same works for NDP. For this, the IPv6 address must be used instead of the I
 Mantikor is designed as a console program and can therefore also be executed directly via cmd or powershell. To select an item in the menu, the listed numbers are used. Mantikor allows to spoof either over IPv4/IPv6 or both protocols i.e. ARP and NDP at the same time.
 
 ## What you need
-To compile Mantikor you need .NET 8.0, Visual Studio (Windows) and Npcap installed on your computer.#
+To build Mantikor you need the [.NET 8.0 SDK](https://dotnet.microsoft.com/download). At runtime a packet-capture driver has to be installed:
+
+- **Windows:** [Npcap](https://npcap.com) (run the console as Administrator).
+- **Linux:** `libpcap` (e.g. `sudo apt install libpcap0.8`). Capturing/sending raw packets needs elevated privileges — run with `sudo`, or grant the binary the required capabilities once:
+  ```bash
+  sudo setcap cap_net_raw,cap_net_admin=eip ./Mantikor
+  ```
+
+### Build & run on Linux
+```bash
+# Build and run from source
+dotnet run --project src/Mantikor.csproj
+
+# Or publish a self-contained single-file binary (no .NET runtime required on the target)
+dotnet publish src/Mantikor.csproj -p:PublishProfile=Linux-Deploy-Single-File
+sudo ./src/bin/Release/net8.0/publish/linux-x64/Mantikor
+```
+
+### Build & run on Windows
+Open `Mantikor.sln` in Visual Studio and run, or from the command line:
+```bash
+dotnet run --project src/Mantikor.csproj
+```
 
 ## Changelog
+- V1.0.9.0 - Fixed NDP/IPv6 spoofing (correct ICMPv6 checksum, hop limit 255 and neighbor-advertisement layout), replaced the unsupported `Thread.Abort()` with cooperative cancellation so **Force Stop** no longer crashes, fixed the duplicate ARP MAC resolution, hardened all console input, added graceful handling when libpcap/Npcap is missing, added an **Exit** menu item, dropped the Windows-only Costura.Fody weaver in favour of .NET single-file publish, moved to a committed `.gitignore` (removed build output and restored packages from version control).
 - V1.0.8.0 - SharpPcap 6.2.5.0, .NET 8.0, Linux Support, changed to LibPcapDevice, new method to resolve via ARP, NDP-Classes merged, Code-Cleanup, fixed wrong User-Inputs.
 
 ## Copyright

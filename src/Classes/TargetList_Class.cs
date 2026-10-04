@@ -1,4 +1,4 @@
-﻿using SharpPcap.LibPcap;
+using SharpPcap.LibPcap;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
@@ -6,8 +6,6 @@ using System.Net.Sockets;
 class TargetList_Class
 {
     private readonly List<Target_Class> targetList = new List<Target_Class>();
-    private readonly Arp_Class arp = new();
-
 
     public int GetLength()
     {
@@ -19,42 +17,70 @@ class TargetList_Class
         return targetList;
     }
 
-    public void AddNewTarget(LibPcapLiveDevice pLiveDevice)
+    public void AddNewTarget(LibPcapLiveDevice? pLiveDevice)
     {
+        if (pLiveDevice == null)
+        {
+            Console.WriteLine("#> No network adapter configured. Choose one with [1] first. Press \"ENTER\".");
+            Console.ReadLine();
+            return;
+        }
+
         try
         {
             Target_Class target = new();
-            Console.Write("Target IPv4 / IPv6-Address: ");
-            IPAddress tempAddr = IPAddress.Parse(Console.ReadLine());
+
+            IPAddress? tempAddr = ReadIpAddress("Target IPv4 / IPv6-Address: ");
+            if (tempAddr == null)
+            {
+                return;
+            }
 
             if (tempAddr.AddressFamily.Equals(AddressFamily.InterNetwork))
             {
+                // IPv4: both MAC addresses can be resolved automatically via ARP.
                 target.t_ipAddr = tempAddr;
                 target.t_phAddr = Arp_Class.GetPhysicalAddress(target.t_ipAddr, pLiveDevice);
 
-                Console.Write("Gateway IPv4-Address: ");
-                target.s_ipAddr = IPAddress.Parse(Console.ReadLine());
+                target.s_ipAddr = ReadIpAddress("Gateway IPv4-Address: ");
+                if (target.s_ipAddr == null)
+                {
+                    return;
+                }
                 target.s_phAddr = Arp_Class.GetPhysicalAddress(target.s_ipAddr, pLiveDevice);
             }
             else if (tempAddr.AddressFamily.Equals(AddressFamily.InterNetworkV6))
             {
+                // IPv6: there is no ARP, so the hardware addresses are entered
+                // manually (they can be read from the target's neighbor cache).
                 target.t_ipAddr = tempAddr;
+                target.t_phAddr = ReadPhysicalAddress("Target Physical-Address: ");
 
-                Console.Write("Target Physical-Address: ");
-                target.t_phAddr = ParsePhysicalAddress(Console.ReadLine());
+                target.s_ipAddr = ReadIpAddress("Gateway IPv6-Address: ");
+                if (target.s_ipAddr == null)
+                {
+                    return;
+                }
+                target.s_phAddr = ReadPhysicalAddress("Gateway Physical-Address: ");
+            }
+            else
+            {
+                return;
+            }
 
-                Console.Write("Gateway IPv6-Address: ");
-                target.s_ipAddr = IPAddress.Parse(Console.ReadLine());
-
-                Console.Write("Gateway Physical-Address: ");
-                target.s_phAddr = ParsePhysicalAddress(Console.ReadLine());
+            if (!target.IsComplete())
+            {
+                Console.WriteLine("#> Target not added: some addresses could not be resolved. Press \"ENTER\".");
+                Console.ReadLine();
+                return;
             }
 
             targetList.Add(target);
         }
         catch (FormatException)
         {
-
+            Console.WriteLine("#> Invalid input - target not added. Press \"ENTER\".");
+            Console.ReadLine();
         }
     }
 
@@ -73,27 +99,53 @@ class TargetList_Class
         if (targetList.Count > 0)
         {
             Console.Write("Remove with [Entry-Nr] or press \"ENTER\": ");
-            string removeNr = Console.ReadLine();
+            string? removeNr = Console.ReadLine();
 
-            try
+            if (int.TryParse(removeNr, out int index) && index >= 0 && index < targetList.Count)
             {
-                targetList.RemoveAt(Convert.ToInt32(removeNr));
+                targetList.RemoveAt(index);
             }
-            catch (Exception) { }
         }
     }
 
-    private static PhysicalAddress ParsePhysicalAddress(string pPhysicalAddress)
+    private static IPAddress? ReadIpAddress(string pPrompt)
     {
-        string phyAddrNew;
-        if (pPhysicalAddress.Contains(':'))
+        Console.Write(pPrompt);
+        string? input = Console.ReadLine();
+
+        if (string.IsNullOrWhiteSpace(input))
         {
-            phyAddrNew = pPhysicalAddress.Replace(":", "-");
+            return null;
         }
-        else
+
+        if (IPAddress.TryParse(input.Trim(), out IPAddress? address))
         {
-            phyAddrNew = pPhysicalAddress;
+            return address;
         }
-        return PhysicalAddress.Parse(phyAddrNew);
+
+        Console.WriteLine("#> \"{0}\" is not a valid IP address.", input);
+        return null;
+    }
+
+    private static PhysicalAddress? ReadPhysicalAddress(string pPrompt)
+    {
+        Console.Write(pPrompt);
+        string? input = Console.ReadLine();
+
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            return null;
+        }
+
+        // Accept both colon- and hyphen-separated notations.
+        string normalized = input.Trim().Replace(":", "-").ToUpperInvariant();
+
+        if (PhysicalAddress.TryParse(normalized, out PhysicalAddress? address))
+        {
+            return address;
+        }
+
+        Console.WriteLine("#> \"{0}\" is not a valid MAC address.", input);
+        return null;
     }
 }

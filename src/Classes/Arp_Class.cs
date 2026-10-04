@@ -1,4 +1,4 @@
-﻿using PacketDotNet;
+using PacketDotNet;
 using SharpPcap;
 using SharpPcap.LibPcap;
 using System.Net;
@@ -14,18 +14,20 @@ class Arp_Class
         return ethernetPacket;
     }
 
-    public static PhysicalAddress GetPhysicalAddress(IPAddress pIPAddress, LibPcapLiveDevice pLiveDevice)
+    public static PhysicalAddress? GetPhysicalAddress(IPAddress pIPAddress, LibPcapLiveDevice pLiveDevice)
     {
         ARP arper = new(pLiveDevice);
 
-        PhysicalAddress resolvedPhyAddr = arper.Resolve(pIPAddress);
+        // Resolve once - the previous version called Resolve() a second time for
+        // the return value, doubling the blocking network round-trip.
+        PhysicalAddress? resolvedPhyAddr = arper.Resolve(pIPAddress);
 
         if (resolvedPhyAddr == null)
         {
-            Console.WriteLine("#> MAC address could not be resolved! Make sure that the IP is reachable!. Press \"ENTER\" to continue.");
-            Console.Read();
+            Console.WriteLine("#> MAC address could not be resolved! Make sure that the IP is reachable. Press \"ENTER\" to continue.");
+            Console.ReadLine();
         }
 
-        return arper.Resolve(pIPAddress);
+        return resolvedPhyAddr;
     }
 }

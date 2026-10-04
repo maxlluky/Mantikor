@@ -1,0 +1,35 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Ll]og/
+[Ll]ogs/
+
+# .NET
+*.user
+*.suo
+*.userprefs
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# NuGet
+# Restored packages live in the global cache with PackageReference; never commit them.
+packages/
+*.nupkg
+*.snupkg
+.nuget/
+
+# Visual Studio / Rider / VS Code
+.vs/
+.vscode/
+.idea/
+*.swp
+
+# Publish output
+publish/
+*.publishproj
+
+# OS files
+.DS_Store
+Thumbs.db
