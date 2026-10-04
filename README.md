@@ -48,7 +48,7 @@ Menu:
 2. **Scan for IPv6 Hosts** – actively discovers IPv6 hosts on the link (ICMPv6 echo to `ff02::1`), lists each one with its IPv6 address, MAC and (best-effort) hostname, and lets you pick the target and gateway straight from the results. Missing MAC addresses are resolved automatically via NDP.
 3. **Define new Targets (manual)** – enter a target IP by hand. For IPv4 the MACs are resolved via ARP; for IPv6 they are resolved automatically via NDP (Neighbor Solicitation), with manual entry as a fallback.
 4. **Print/Edit Target-List** – review or remove targets.
-5. **Start Attack** / 6. **Force Stop**.
+5. **Start Attack** / 6. **Force Stop**. **Force Stop** does not just stop sending: it also broadcasts the *correct* ARP/NDP mappings a few times, so the victim and gateway relearn each other's real MAC immediately instead of losing connectivity until the poisoned entry times out. The same repair runs automatically when you exit with **[0]**.
 
 For IPv6 you no longer have to look up the target or gateway MAC yourself – Mantikor discovers and resolves them on the link.
 
@@ -78,14 +78,16 @@ dotnet run --project src/Mantikor.csproj
 ```
 
 ## Changelog
+- V1.0.11.0 - **Force Stop** (and exit) now repairs the poisoned ARP/NDP caches by broadcasting the correct mappings, so the network heals immediately instead of staying broken until the entries time out. Fixed an infinite busy-loop when standard input reached end-of-file (closed/redirected stdin). Clarified the license (MIT, matching the `LICENSE` file) in the README and project file. Added a unit-test suite for the packet/address helpers (ICMPv6 checksum, solicited-node multicast, multicast MAC, EUI-64 link-local, neighbor-advertisement layout).
 - V1.0.10.0 - Added active IPv6 host discovery: scan the local link for IPv6 hosts (ICMPv6 echo to ff02::1), list them with IPv6 address, MAC and hostname, and pick target/gateway from the results. Added an NDP resolver (Neighbor Solicitation/Advertisement) so IPv6 target and gateway MAC addresses are resolved automatically instead of being typed in by hand.
 - V1.0.9.0 - Fixed NDP/IPv6 spoofing (correct ICMPv6 checksum, hop limit 255 and neighbor-advertisement layout), replaced the unsupported `Thread.Abort()` with cooperative cancellation so **Force Stop** no longer crashes, fixed the duplicate ARP MAC resolution, hardened all console input, added graceful handling when libpcap/Npcap is missing, added an **Exit** menu item, dropped the Windows-only Costura.Fody weaver in favour of .NET single-file publish, moved to a committed `.gitignore` (removed build output and restored packages from version control).
 - V1.0.8.0 - SharpPcap 6.2.5.0, .NET 8.0, Linux Support, changed to LibPcapDevice, new method to resolve via ARP, NDP-Classes merged, Code-Cleanup, fixed wrong User-Inputs.
 
-## Copyright
-The contents and works in this software created by the software operators are subject to German copyright law. The reproduction, editing, distribution and any kind of use outside the limits of copyright law require the written consent of the respective author or creator. Downloads and copies of this software are only permitted for private, non-commercial use.
+## License
+Mantikor is released under the [MIT License](LICENSE) — Copyright (c) 2021 MaxlLuky. You may use,
+modify and redistribute it (including commercially) under the terms of that license.
 
-Insofar as the content on this software was not created by the operator, the copyrights of third parties are observed. In particular, third-party content is identified as such. Should you nevertheless become aware of a copyright infringement, please inform us accordingly. If we become aware of any infringements, we will remove such contents immediately.
+It depends on [SharpPcap](https://github.com/chmorgan/sharppcap) and
+[PacketDotNet](https://github.com/chmorgan/packetnet), both MIT-licensed.
 
-Source: [eRecht24.de](https://www.e-recht24.de/)
 Cheers 👀

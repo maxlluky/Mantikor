@@ -22,6 +22,13 @@ namespace Mantikor
                 Console.Write("#>");
                 string? input = Console.ReadLine();
 
+                // A null line means end-of-input (closed or redirected stdin). Without this the
+                // menu would spin forever at 100% CPU, so treat EOF the same as "Exit".
+                if (input == null)
+                {
+                    break;
+                }
+
                 switch (input)
                 {
                     case "1":

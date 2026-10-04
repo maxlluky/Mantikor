@@ -117,7 +117,7 @@ static class PacketUtil_Class
         return DeriveLinkLocalFromMac(pDevice.MacAddress);
     }
 
-    private static IPAddress DeriveLinkLocalFromMac(PhysicalAddress pMac)
+    internal static IPAddress DeriveLinkLocalFromMac(PhysicalAddress pMac)
     {
         byte[] m = pMac.GetAddressBytes();
         byte[] ll =

@@ -12,6 +12,13 @@ class Attack_Class
     private LibPcapLiveDevice? liveDevice;
     private readonly List<Thread> threadList = new List<Thread>();
 
+    // Targets currently being attacked, remembered so their poisoned caches can be repaired on stop.
+    private readonly List<Target_Class> activeTargets = new List<Target_Class>();
+
+    // How many corrective packets to send per target when healing, and the gap between them.
+    private const int RestoreRounds = 5;
+    private const int RestoreDelayMs = 100;
+
     /// <summary>
     /// Indicates whether an attack is active. Marked volatile because it is
     /// written by the UI thread (<see cref="ForceStop"/>) and read by every
@@ -48,7 +55,7 @@ class Attack_Class
         }
 
         liveDevice = pLiveDevice;
-        ndp = new Ndp_Class(pLiveDevice);
+        ndp = new Ndp_Class(pLiveDevice.MacAddress);
         scanStatus = true;
 
         foreach (Target_Class target in pTargetList.GetTargetList())
@@ -76,6 +83,7 @@ class Attack_Class
             thread.IsBackground = true;
             thread.Start();
             threadList.Add(thread);
+            activeTargets.Add(target);
         }
 
         if (threadList.Count == 0)
@@ -153,6 +161,49 @@ class Attack_Class
             }
         }
         threadList.Clear();
+
+        RestoreNetwork();
+        activeTargets.Clear();
+    }
+
+    /// <summary>
+    /// Repairs the ARP/NDP caches poisoned during the attack by broadcasting the <i>correct</i> mappings,
+    /// so the victim and gateway relearn each other's real MAC immediately instead of losing connectivity
+    /// until the stale entry times out. Sending truthful packets only; best-effort and never fatal.
+    /// </summary>
+    private void RestoreNetwork()
+    {
+        if (liveDevice == null || activeTargets.Count == 0)
+        {
+            return;
+        }
+
+        for (int round = 0; round < RestoreRounds; round++)
+        {
+            foreach (Target_Class target in activeTargets)
+            {
+                try
+                {
+                    if (target.t_ipAddr!.AddressFamily == AddressFamily.InterNetwork)
+                    {
+                        // Tell the victim the gateway's real MAC, and the gateway the victim's real MAC.
+                        liveDevice.SendPacket(Arp_Class.BuildCorrectiveArpReply(target.s_ipAddr!, target.s_phAddr!, target.t_ipAddr!, target.t_phAddr!));
+                        liveDevice.SendPacket(Arp_Class.BuildCorrectiveArpReply(target.t_ipAddr!, target.t_phAddr!, target.s_ipAddr!, target.s_phAddr!));
+                    }
+                    else if (ndp != null)
+                    {
+                        liveDevice.SendPacket(ndp.BuildNeighborAdvertisement(target.t_ipAddr!, target.s_ipAddr!, target.t_phAddr!, target.s_phAddr));
+                        liveDevice.SendPacket(ndp.BuildNeighborAdvertisement(target.s_ipAddr!, target.t_ipAddr!, target.s_phAddr!, target.t_phAddr));
+                    }
+                }
+                catch (Exception)
+                {
+                    // The link may already be down; healing is best-effort.
+                }
+            }
+
+            Thread.Sleep(RestoreDelayMs);
+        }
     }
 
     public int GetThreadCount()
