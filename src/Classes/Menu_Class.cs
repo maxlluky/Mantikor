@@ -25,10 +25,11 @@ class Menu_Class
         Console.WriteLine("Use the numbers to navigate!");
         Console.WriteLine("To revoke or skip an entry, press the \"ENTER\" button\n");
         Console.WriteLine("[1] Configure Network Adapter => {0}", deviceDescription);
-        Console.WriteLine("[2] Define new Targets");
-        Console.WriteLine("[3] Print/Edit Target-List => {0}\n", pTargetList.GetLength());
-        Console.WriteLine("[4] Start Attack : Threads => {0}", pAttack.GetThreadCount());
-        Console.WriteLine("[5] Force Stop");
+        Console.WriteLine("[2] Scan for IPv6 Hosts (auto MAC)");
+        Console.WriteLine("[3] Define new Targets (manual)");
+        Console.WriteLine("[4] Print/Edit Target-List => {0}\n", pTargetList.GetLength());
+        Console.WriteLine("[5] Start Attack : Threads => {0}", pAttack.GetThreadCount());
+        Console.WriteLine("[6] Force Stop");
         Console.WriteLine("[0] Exit\n");
     }
 

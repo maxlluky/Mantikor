@@ -43,6 +43,15 @@ The same works for NDP. For this, the IPv6 address must be used instead of the I
 ## How to use Mantikor
 Mantikor is designed as a console program and can therefore also be executed directly via cmd or powershell. To select an item in the menu, the listed numbers are used. Mantikor allows to spoof either over IPv4/IPv6 or both protocols i.e. ARP and NDP at the same time.
 
+Menu:
+1. **Configure Network Adapter** – pick the interface to use.
+2. **Scan for IPv6 Hosts** – actively discovers IPv6 hosts on the link (ICMPv6 echo to `ff02::1`), lists each one with its IPv6 address, MAC and (best-effort) hostname, and lets you pick the target and gateway straight from the results. Missing MAC addresses are resolved automatically via NDP.
+3. **Define new Targets (manual)** – enter a target IP by hand. For IPv4 the MACs are resolved via ARP; for IPv6 they are resolved automatically via NDP (Neighbor Solicitation), with manual entry as a fallback.
+4. **Print/Edit Target-List** – review or remove targets.
+5. **Start Attack** / 6. **Force Stop**.
+
+For IPv6 you no longer have to look up the target or gateway MAC yourself – Mantikor discovers and resolves them on the link.
+
 ## What you need
 To build Mantikor you need the [.NET 8.0 SDK](https://dotnet.microsoft.com/download). At runtime a packet-capture driver has to be installed:
 
@@ -69,6 +78,7 @@ dotnet run --project src/Mantikor.csproj
 ```
 
 ## Changelog
+- V1.0.10.0 - Added active IPv6 host discovery: scan the local link for IPv6 hosts (ICMPv6 echo to ff02::1), list them with IPv6 address, MAC and hostname, and pick target/gateway from the results. Added an NDP resolver (Neighbor Solicitation/Advertisement) so IPv6 target and gateway MAC addresses are resolved automatically instead of being typed in by hand.
 - V1.0.9.0 - Fixed NDP/IPv6 spoofing (correct ICMPv6 checksum, hop limit 255 and neighbor-advertisement layout), replaced the unsupported `Thread.Abort()` with cooperative cancellation so **Force Stop** no longer crashes, fixed the duplicate ARP MAC resolution, hardened all console input, added graceful handling when libpcap/Npcap is missing, added an **Exit** menu item, dropped the Windows-only Costura.Fody weaver in favour of .NET single-file publish, moved to a committed `.gitignore` (removed build output and restored packages from version control).
 - V1.0.8.0 - SharpPcap 6.2.5.0, .NET 8.0, Linux Support, changed to LibPcapDevice, new method to resolve via ARP, NDP-Classes merged, Code-Cleanup, fixed wrong User-Inputs.
 

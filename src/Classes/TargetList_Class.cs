@@ -6,6 +6,7 @@ using System.Net.Sockets;
 class TargetList_Class
 {
     private readonly List<Target_Class> targetList = new List<Target_Class>();
+    private readonly Scanner_Class scanner = new();
 
     public int GetLength()
     {
@@ -15,6 +16,85 @@ class TargetList_Class
     public List<Target_Class> GetTargetList()
     {
         return targetList;
+    }
+
+    /// <summary>
+    /// Scans the local link for IPv6 hosts, lets the user pick a victim and a
+    /// gateway from the results (or type an address), and resolves any missing
+    /// MAC automatically via NDP.
+    /// </summary>
+    public void ScanAndAddTarget(LibPcapLiveDevice? pLiveDevice)
+    {
+        if (pLiveDevice == null)
+        {
+            Console.WriteLine("#> No network adapter configured. Choose one with [1] first. Press \"ENTER\".");
+            Console.ReadLine();
+            return;
+        }
+
+        Console.WriteLine("#> Scanning the link for IPv6 hosts (approx. 4s)...");
+        List<DiscoveredHost> hosts;
+        try
+        {
+            hosts = scanner.DiscoverHosts(pLiveDevice, 4);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("#> Scan failed: {0} Press \"ENTER\".", ex.Message);
+            Console.ReadLine();
+            return;
+        }
+
+        if (hosts.Count == 0)
+        {
+            Console.WriteLine("#> No IPv6 hosts answered. They may have IPv6 disabled or be filtering");
+            Console.WriteLine("#> ICMPv6. You can still add a target manually with [3]. Press \"ENTER\".");
+            Console.ReadLine();
+            return;
+        }
+
+        PrintHosts(hosts);
+
+        DiscoveredHost? victim = PickHost(hosts, "Select the TARGET by number: ");
+        if (victim == null)
+        {
+            return;
+        }
+
+        IPAddress? gatewayIp;
+        PhysicalAddress? gatewayMac;
+
+        DiscoveredHost? gatewayHost = PickHost(hosts, "Select the GATEWAY by number (or press ENTER to type it): ");
+        if (gatewayHost != null)
+        {
+            gatewayIp = gatewayHost.IpAddress;
+            gatewayMac = gatewayHost.MacAddress;
+        }
+        else
+        {
+            gatewayIp = ReadIpAddress("Gateway IPv6-Address: ");
+            if (gatewayIp == null)
+            {
+                return;
+            }
+            gatewayMac = ResolveOrAskMac(pLiveDevice, gatewayIp, "Gateway");
+            if (gatewayMac == null)
+            {
+                return;
+            }
+        }
+
+        Target_Class target = new()
+        {
+            t_ipAddr = victim.IpAddress,
+            t_phAddr = victim.MacAddress,
+            s_ipAddr = gatewayIp,
+            s_phAddr = gatewayMac
+        };
+
+        targetList.Add(target);
+        Console.WriteLine("#> Target added: {0} via gateway {1}. Press \"ENTER\".", victim.IpAddress, gatewayIp);
+        Console.ReadLine();
     }
 
     public void AddNewTarget(LibPcapLiveDevice? pLiveDevice)
@@ -51,17 +131,21 @@ class TargetList_Class
             }
             else if (tempAddr.AddressFamily.Equals(AddressFamily.InterNetworkV6))
             {
-                // IPv6: there is no ARP, so the hardware addresses are entered
-                // manually (they can be read from the target's neighbor cache).
+                // IPv6: try to resolve the MAC addresses automatically via NDP,
+                // falling back to manual entry when a host does not answer.
                 target.t_ipAddr = tempAddr;
-                target.t_phAddr = ReadPhysicalAddress("Target Physical-Address: ");
+                target.t_phAddr = ResolveOrAskMac(pLiveDevice, tempAddr, "Target");
+                if (target.t_phAddr == null)
+                {
+                    return;
+                }
 
                 target.s_ipAddr = ReadIpAddress("Gateway IPv6-Address: ");
                 if (target.s_ipAddr == null)
                 {
                     return;
                 }
-                target.s_phAddr = ReadPhysicalAddress("Gateway Physical-Address: ");
+                target.s_phAddr = ResolveOrAskMac(pLiveDevice, target.s_ipAddr, "Gateway");
             }
             else
             {
@@ -106,6 +190,52 @@ class TargetList_Class
                 targetList.RemoveAt(index);
             }
         }
+    }
+
+    /// <summary>
+    /// Resolves the MAC for an IPv6 address via NDP, prompting for manual entry
+    /// if the host does not answer in time.
+    /// </summary>
+    private PhysicalAddress? ResolveOrAskMac(LibPcapLiveDevice pLiveDevice, IPAddress pAddress, string pLabel)
+    {
+        Console.WriteLine("#> Resolving {0} MAC for {1} via NDP...", pLabel, pAddress);
+        PhysicalAddress? mac = scanner.ResolveMac(pLiveDevice, pAddress);
+
+        if (mac != null)
+        {
+            Console.WriteLine("#> {0} MAC resolved: {1}", pLabel, mac);
+            return mac;
+        }
+
+        Console.WriteLine("#> Could not resolve automatically.");
+        return ReadPhysicalAddress(pLabel + " Physical-Address (or ENTER to cancel): ");
+    }
+
+    private static void PrintHosts(List<DiscoveredHost> pHosts)
+    {
+        Console.WriteLine();
+        Console.WriteLine("Found {0} host(s):", pHosts.Count);
+        for (int i = 0; i < pHosts.Count; i++)
+        {
+            Console.WriteLine("  [{0}] {1,-40} {2} {3}",
+                i,
+                pHosts[i].IpAddress,
+                pHosts[i].MacAddress,
+                pHosts[i].Hostname);
+        }
+        Console.WriteLine();
+    }
+
+    private static DiscoveredHost? PickHost(List<DiscoveredHost> pHosts, string pPrompt)
+    {
+        Console.Write(pPrompt);
+        string? input = Console.ReadLine();
+
+        if (int.TryParse(input, out int index) && index >= 0 && index < pHosts.Count)
+        {
+            return pHosts[index];
+        }
+        return null;
     }
 
     private static IPAddress? ReadIpAddress(string pPrompt)

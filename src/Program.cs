@@ -28,15 +28,18 @@ namespace Mantikor
                         menu.ConfigureNetworkAdapter();
                         break;
                     case "2":
-                        targetList.AddNewTarget(menu.captureDevice);
+                        targetList.ScanAndAddTarget(menu.captureDevice);
                         break;
                     case "3":
-                        targetList.PrintTargetList();
+                        targetList.AddNewTarget(menu.captureDevice);
                         break;
                     case "4":
-                        attack.StartAttack(menu.captureDevice, targetList);
+                        targetList.PrintTargetList();
                         break;
                     case "5":
+                        attack.StartAttack(menu.captureDevice, targetList);
+                        break;
+                    case "6":
                         attack.ForceStop();
                         break;
                     case "0":
