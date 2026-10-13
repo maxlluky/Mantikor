@@ -3,7 +3,6 @@
 Disclaimer: This project is only for demonstration purposes and should not be used for illegal acts! 
 Please have a look at why I published this tool. Thanks
 ```
-<img src="img/01.jpg">
 
 ## Whats Mantikor?
 Mantikor is an Open-Source address-resolution spoofing-Tool. The application is written in C# with the use of [SharpPcap](https://github.com/chmorgan/sharppcap) and [PacketNet](https://github.com/chmorgan/packetnet).
