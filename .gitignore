@@ -28,6 +28,11 @@ packages/
 
 # Publish output
 publish/
+
+# Automatically recorded attack traffic
+captures/
+*.pcap
+*.pcapng
 *.publishproj
 
 # OS files

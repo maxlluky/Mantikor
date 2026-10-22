@@ -7,6 +7,7 @@ class Attack_Class
 {
     //--Classes
     private Ndp_Class? ndp;
+    private readonly PacketCapture_Class packetCapture = new();
 
     //--Variables
     private LibPcapLiveDevice? liveDevice;
@@ -51,6 +52,10 @@ class Attack_Class
         ndp = new Ndp_Class(pLiveDevice);
         scanStatus = true;
 
+        // Record every packet the adapter sees for the duration of the
+        // attack, so the intercepted traffic can be reviewed afterwards.
+        packetCapture.Start(pLiveDevice);
+
         foreach (Target_Class target in pTargetList.GetTargetList())
         {
             // Skip targets whose address resolution failed - sending with a
@@ -81,6 +86,7 @@ class Attack_Class
         if (threadList.Count == 0)
         {
             scanStatus = false;
+            packetCapture.Stop();
             Console.WriteLine("#> No valid targets to attack. Press \"ENTER\".");
             Console.ReadLine();
         }
@@ -153,6 +159,8 @@ class Attack_Class
             }
         }
         threadList.Clear();
+
+        packetCapture.Stop();
     }
 
     public int GetThreadCount()
